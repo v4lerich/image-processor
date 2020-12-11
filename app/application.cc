@@ -7,9 +7,13 @@
 #include <imgui/backends/imgui_impl_sdl.h>
 #include <imgui/imgui.h>
 
+#include <vector>
+
 #include "application_config.h"
 
 namespace image_processor {
+
+static const std::vector<ImWchar> kForkAwesomeIconsRanges{ICON_MIN_FK, ICON_MAX_FK, 0};
 
 Application::Application(int /*argc*/, char** /*argv*/) {}
 
@@ -63,14 +67,13 @@ void Application::RenderViews() {
     ImGui::NewFrame();
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 
-    //    for (auto& view : views_) {
-    //        view->Render();
-    //        if (view->WantClose()) done_ = true;
-    //    }
+    for (auto& view : views_) {
+        view->Render();
+        done_ |= view->WantClose();
+    }
 
     ImGui::Render();
-    glViewport(0, 0,  //
-               static_cast<int>(imgui_io_->DisplaySize.x),
+    glViewport(0, 0, static_cast<int>(imgui_io_->DisplaySize.x),
                static_cast<int>(imgui_io_->DisplaySize.y));
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -129,10 +132,20 @@ auto Application::InitImGui() -> Application::ReturnCode {
     ImGui_ImplSDL2_InitForOpenGL(main_window_, gl_context_);
     ImGui_ImplOpenGL3_Init(config::kGlslVersion);
 
+    imgui_io_->Fonts->AddFontFromFileTTF(config::kRubikFontPath.c_str(), 17.0F);
+
+    ImFontConfig icons_config;
+    icons_config.MergeMode = true;
+    icons_config.PixelSnapH = true;
+    imgui_io_->Fonts->AddFontFromFileTTF(config::kForkAwesomeFontPath.c_str(), 17.0F, &icons_config,
+                                         kForkAwesomeIconsRanges.data());
+
     return 0;
 }
 
 auto Application::Finalize() -> Application::ReturnCode {
+    views_.clear();
+
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
@@ -143,5 +156,7 @@ auto Application::Finalize() -> Application::ReturnCode {
 
     return 0;
 }
+
+void Application::AddView(std::unique_ptr<view::View> view) { views_.push_back(std::move(view)); }
 
 }  // namespace image_processor

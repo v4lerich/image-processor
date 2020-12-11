@@ -4,6 +4,10 @@
 #include <SDL.h>
 #include <imgui.h>
 
+#include <memory>
+#include <vector>
+#include <view.h>
+
 namespace image_processor {
 
 class Application {
@@ -13,6 +17,8 @@ class Application {
     Application(int argc, char** argv);
     auto Init() -> ReturnCode;
     auto Run() -> ReturnCode;
+
+    void AddView(std::unique_ptr<view::View> view);
 
   private:
     static auto InitSdl() -> ReturnCode;
@@ -27,6 +33,8 @@ class Application {
     SDL_GLContext gl_context_{};
     ImGuiIO *imgui_io_{};
     bool done_{};
+
+    std::vector<std::unique_ptr<view::View>> views_{};
 };
 
 }  // namespace image_processor

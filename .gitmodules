@@ -9,3 +9,15 @@
 	path = 3rd_party/imgui/imgui
 	url = https://github.com/ocornut/imgui
 	branch = docking
+[submodule "3rd_party/imgui_filedialog/ImGuiFileDialog"]
+	path = 3rd_party/imgui_filedialog/ImGuiFileDialog
+	url = https://github.com/aiekick/ImGuiFileDialog
+[submodule "3rd_party/dirent"]
+	path = 3rd_party/dirent
+	url = https://github.com/tronkko/dirent
+[submodule "3rd_party/icon_font_headers/IconFontCppHeaders"]
+	path = 3rd_party/icon_font_headers/IconFontCppHeaders
+	url = https://github.com/juliettef/IconFontCppHeaders
+[submodule "3rd_party/fork_awesome/Fork-Awesome"]
+	path = 3rd_party/fork_awesome/Fork-Awesome
+	url = https://github.com/ForkAwesome/Fork-Awesome
