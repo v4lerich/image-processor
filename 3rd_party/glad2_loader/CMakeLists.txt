@@ -18,4 +18,4 @@ target_link_libraries(${PROJECT_NAME}
         PUBLIC glad_gl_core_42)
 
 target_include_directories(${PROJECT_NAME}
-        PUBLIC include)
+        PUBLIC .)

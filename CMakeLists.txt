@@ -18,5 +18,10 @@ set(CMAKE_CXX_FLAGS_RELEASE_INIT "-Wall")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+find_package(PythonInterp REQUIRED)
+message(${PYTHON_EXECUTABLE})
+
+find_package(OpenGL REQUIRED)
+
 add_subdirectory(app/)
 add_subdirectory(3rd_party/)
