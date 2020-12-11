@@ -5,9 +5,10 @@
 
 namespace image_processor::view {
 
-class ImageView : public View {
+class ImageView final : public View {
   public:
     ImageView();
+    void Render() override;
 
   private:
 };

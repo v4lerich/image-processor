@@ -14,8 +14,14 @@ ImageProcessorView::ImageProcessorView() = default;
 void ImageProcessorView::Render() {
     if (BeginDockingWindow()) {
         RenderMenuBar();
+
         ImGuiWindowClass window_class;
         window_class.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoTabBar;
+
+//        ImGui::SetNextWindowClass(&window_class);
+//        image_view_.Render();
+
+        file_dialog_view_.Render();
 
         EndDockingWindow();
     }
@@ -71,6 +77,9 @@ void ImageProcessorView::EndDockingWindow() {
 void ImageProcessorView::RenderMenuBar() {
     if (ImGui::BeginMenuBar()) {
         if (ImGui::BeginMenu("File")) {
+            if (ImGui::MenuItem("Open", nullptr, false)) {
+                file_dialog_view_.StartLoadingImage();
+            }
             if (ImGui::MenuItem("Exit", nullptr, false)) {
                 SetWantClose();
             }

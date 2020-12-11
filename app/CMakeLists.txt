@@ -7,9 +7,10 @@ add_executable(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
         PRIVATE
         imgui
-        glad2-loader
         sdl2
+        glad2-loader
         image-processor::view
+        image-processor::model
         icon-font-headers)
 
 install(TARGETS ${PROJECT_NAME}

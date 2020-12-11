@@ -10,7 +10,7 @@ file(GLOB ${PROJECT_NAME}_SOURCES
         ImGuiFileDialog/ImGuiFileDialog/*.cpp)
 
 if (WIN32)
-    set(DIRENT_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/3rd_party/dirent/dirent/include)
+    set(DIRENT_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/3rd_party/dirent/include)
     include_directories(BEFORE SYSTEM ${DIRENT_INCLUDE_DIR})
 endif ()
 
