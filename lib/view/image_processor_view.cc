@@ -8,8 +8,10 @@
 namespace image_processor::view {
 
 const std::string kDockspaceName = "main_dockspace";
+const std::string kImageViewWindowName = "image_view";
 
-ImageProcessorView::ImageProcessorView() = default;
+ImageProcessorView::ImageProcessorView(ImageProcessorView::Model& model)
+    : image_view_{kImageViewWindowName, model}, file_dialog_view_{model} {}
 
 void ImageProcessorView::Render() {
     if (BeginDockingWindow()) {
@@ -18,8 +20,8 @@ void ImageProcessorView::Render() {
         ImGuiWindowClass window_class;
         window_class.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoTabBar;
 
-//        ImGui::SetNextWindowClass(&window_class);
-//        image_view_.Render();
+        ImGui::SetNextWindowClass(&window_class);
+        image_view_.Render();
 
         file_dialog_view_.Render();
 
@@ -64,7 +66,7 @@ void ImageProcessorView::InitDockingLayout() {
             ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Left, 0, nullptr, &dock_main_id);
 
         //        ImGui::DockBuilderDockWindow(player_view_.WindowName().c_str(), dock_up_id);
-        //        ImGui::DockBuilderDockWindow(editor_view_.WindowName().c_str(), dock_main_id);
+        ImGui::DockBuilderDockWindow(kImageViewWindowName.c_str(), dock_main_id);
         ImGui::DockBuilderFinish(dockspace_id);
     }
 }

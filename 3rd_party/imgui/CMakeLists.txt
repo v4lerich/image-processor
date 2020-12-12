@@ -7,6 +7,7 @@ endif ()
 
 add_library(${PROJECT_NAME}
         STATIC
+        imguiconfig.h
         imgui/imgui.h
         imgui/imgui.cpp
         imgui/imgui_demo.cpp
@@ -20,7 +21,8 @@ add_library(${PROJECT_NAME}
 
 target_compile_definitions(${PROJECT_NAME}
         PRIVATE IMGUI_IMPL_OPENGL_LOADER_GLAD2
-        PUBLIC IMGUI_DEFINE_MATH_OPERATORS)
+        PUBLIC IMGUI_DEFINE_MATH_OPERATORS IMGUI_USER_CONFIG="./imguiconfig.h")
+
 
 target_include_directories(${PROJECT_NAME}
         PUBLIC imgui . ${SDL2_INCLUDE_DIRS})
