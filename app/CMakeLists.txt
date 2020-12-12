@@ -4,10 +4,11 @@ add_executable(${PROJECT_NAME}
         application.h application.cc
         main.cc)
 
+find_package(SDL2 REQUIRED)
 target_link_libraries(${PROJECT_NAME}
         PRIVATE
         imgui
-        sdl2
+        ${SDL2_LIBRARIES}
         glad2-loader
         image-processor::view
         image-processor::model

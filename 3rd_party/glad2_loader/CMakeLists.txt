@@ -14,8 +14,8 @@ add_library(${PROJECT_NAME}
         glad2_loader.h glad2_loader.cc)
 
 target_link_libraries(${PROJECT_NAME}
-        PRIVATE sdl2
+        PRIVATE ${SDL2_LIBRARY}
         PUBLIC glad_gl_core_42)
 
 target_include_directories(${PROJECT_NAME}
-        PUBLIC .)
+        PUBLIC . ${SDL2_INCLUDE_DIR})

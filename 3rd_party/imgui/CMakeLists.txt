@@ -1,8 +1,9 @@
 project(imgui)
 
-if(TARGET ${PROJECT_NAME})
+if (TARGET ${PROJECT_NAME})
     return()
-endif()
+endif ()
+
 
 add_library(${PROJECT_NAME}
         STATIC
@@ -22,7 +23,8 @@ target_compile_definitions(${PROJECT_NAME}
         PUBLIC IMGUI_DEFINE_MATH_OPERATORS)
 
 target_include_directories(${PROJECT_NAME}
-        PUBLIC imgui .)
+        PUBLIC imgui . ${SDL2_INCLUDE_DIRS})
+
 
 target_link_libraries(${PROJECT_NAME}
-        PUBLIC sdl2 glad2-loader)
+        PUBLIC SDL2 glad2-loader)
