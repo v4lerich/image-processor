@@ -13,7 +13,8 @@ find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 target_link_libraries(${PROJECT_NAME}
         PRIVATE icon-font-headers
-        PUBLIC ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} imgui imgui-filedialog image-processor::model)
+        PUBLIC ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} imgui imgui-filedialog image-processor::model stdc++fs)
 
 target_include_directories(${PROJECT_NAME}
         PUBLIC . ${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR})
+

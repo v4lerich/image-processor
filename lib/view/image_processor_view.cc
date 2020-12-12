@@ -82,6 +82,9 @@ void ImageProcessorView::RenderMenuBar() {
             if (ImGui::MenuItem("Open", nullptr, false)) {
                 file_dialog_view_.StartLoadingImage();
             }
+            if (ImGui::MenuItem("Save", nullptr, false, file_dialog_view_.CanSaveImage())) {
+                file_dialog_view_.StartSavingImage();
+            }
             if (ImGui::MenuItem("Exit", nullptr, false)) {
                 SetWantClose();
             }

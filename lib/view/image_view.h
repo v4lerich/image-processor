@@ -3,6 +3,8 @@
 
 #include <image_processor_model.h>
 
+#include <string>
+
 #include "view.h"
 
 namespace image_processor::view {

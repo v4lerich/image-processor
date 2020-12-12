@@ -10,6 +10,7 @@ glad_add_library(glad_gl_core_42
         LANGUAGE "c++"
         API gl:core=4.2)
 
+find_package(SDL2 REQUIRED)
 add_library(${PROJECT_NAME}
         glad2_loader.h glad2_loader.cc)
 

@@ -17,6 +17,7 @@ GlTexture::~GlTexture() {
 GlTexture& GlTexture::operator=(GlTexture&& other) {
     *this = other;
     other.id = 0;
+    return *this;
 }
 
 ImageProcessorModel::ImageProcessorModel() = default;
