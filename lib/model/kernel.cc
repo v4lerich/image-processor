@@ -3,20 +3,25 @@
 namespace image_processor::model {
 
 Kernel::Kernel(size_t offset_width, size_t offset_height)
-    : offset_width_{offset_width_}, offset_height_{offset_height_} {
-    coefficients_.resize(offset_height * 2);
-    for (auto& row : coefficients_) {
-        row.resize(offset_width * 2);
-    }
+    : offset_width_{offset_width_},
+      offset_height_{offset_height_},
+      coefficients_((offset_width * 2 + 1) * (offset_height * 2 + 1)) {}
+
+Kernel::Coefficient Kernel::GetCoefficient(Index delta_width, Index delta_height) {
+    const auto index = EncodeIndex(delta_width, delta_height);
+    return coefficients_[index];
 }
 
-Kernel::Coefficient Kernel::GetCoefficient(Kernel::Index delta_width, Kernel::Index delta_height) {
-    return coefficients_[offset_height_ + delta_height][offset_width_ + delta_width];
+void Kernel::SetCoefficient(Index delta_width, Index delta_height, Coefficient coefficient) {
+    const auto index = EncodeIndex(delta_width, delta_height);
+    coefficients_[index] = coefficient;
 }
 
-void Kernel::SetCoefficient(Kernel::Index delta_width, Kernel::Index delta_height,
-                            Kernel::Coefficient coefficient) {
-    coefficients_[offset_height_ + delta_height][offset_width_ + delta_width] = coefficient;
+auto Kernel::EncodeIndex(Kernel::Index delta_width, Kernel::Index delta_height) const
+    -> Kernel::Index {
+    Index width_index = delta_width + GetWidth();
+    Index height_index = delta_height + GetHeight();
+    return GetWidth() * height_index + width_index;
 }
 
 }  // namespace image_processor::model
