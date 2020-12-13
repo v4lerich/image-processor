@@ -8,5 +8,5 @@ in TVertexData {
 } in_Data;
 
 void main() {
-    gl_FragColor = texture2D(image, in_Data.texture_coordinate.xy);
+    gl_FragColor = texture2D(image, in_Data.texture_coordinate);
 }

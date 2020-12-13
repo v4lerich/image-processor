@@ -129,7 +129,6 @@ void FileDialogView::RenderLoadingImageDialog() {
 
 model::GlTexture FileDialogView::LoadGlImage(SDL_Surface* image) {
     GLuint image_texture;
-    glEnable(GL_TEXTURE_2D);
     glGenTextures(1, &image_texture);
     glBindTexture(GL_TEXTURE_2D, image_texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

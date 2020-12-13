@@ -5,6 +5,7 @@
 
 #include <optional>
 
+#include "gl_kernel_processor_shader_program.h"
 #include "gl_texture.h"
 
 namespace image_processor::model {
@@ -18,6 +19,7 @@ class ImageProcessorModel final {
 
   private:
     std::optional<GlTexture> initial_texture_{};
+    GlKernelProcessorShaderProgram program_;
 };
 
 }  // namespace image_processor::model

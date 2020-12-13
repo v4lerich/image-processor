@@ -27,7 +27,7 @@ GlKernelProcessorShaderProgram::GlKernelProcessorShaderProgram(const Path& verte
     }
 
     positions_attribute_ = glGetAttribLocation(program_id_, "position");
-    texture_coordinates_attribute_ = glGetAttribLocation(program_id_, "texture_cooordinate");
+    texture_coordinates_attribute_ = glGetAttribLocation(program_id_, "texture_coordinate");
 
     kernel_uniform_ = glGetUniformLocation(program_id_, "kernel");
     image_uniform_ = glGetUniformLocation(program_id_, "image");

@@ -13,12 +13,23 @@ class Kernel final {
     using Index = ssize_t;
     template <class T, size_t WIDTH, size_t HEIGHT>
     using Array2D = std::array<std::array<T, WIDTH>, HEIGHT>;
+    template <class T>
+    using Vector2D = std::vector<std::vector<T>>;
 
     Kernel(size_t offset_width, size_t offset_height);
 
-    template <class T, size_t OFFSET_WIDTH, size_t OFFSET_HEIGHT>
-    Kernel(const Array2D<T, 2 * OFFSET_WIDTH + 1, 2 * OFFSET_HEIGHT + 1>& coefficients)
-        : offset_width_{OFFSET_WIDTH}, offset_height_{OFFSET_HEIGHT} {
+    Kernel(const Vector2D<Coefficient>& coefficients) {
+        offset_height_ = coefficients.size() / 2;
+        offset_width_ = coefficients.front().size() / 2;
+        for (const auto& row : coefficients) {
+            coefficients_.insert(end(coefficients_), begin(row), end(row));
+        }
+    }
+
+    template <class T, size_t WIDTH, size_t HEIGHT>
+    Kernel(const Array2D<T, WIDTH, HEIGHT>& coefficients)
+        : offset_width_{WIDTH / 2}, offset_height_{HEIGHT / 2} {
+        static_assert(WIDTH % 2 == 1 && HEIGHT % 2 == 1, "Size must be odd");
         for (const auto& row : coefficients) {
             coefficients_.insert(end(coefficients_), begin(row), end(row));
         }

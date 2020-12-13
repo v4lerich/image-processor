@@ -9,8 +9,8 @@ std::vector<unsigned int> kImageVertexIndices{
     0, 3, 2,  //
 };
 
-GlImageKernelProcessor::GlImageKernelProcessor(const GlKernelProcessorShaderProgram& program,
-                                               const Kernel& kernel)
+GlTextureKernelProcessor::GlTextureKernelProcessor(const GlKernelProcessorShaderProgram& program,
+                                                   const Kernel& kernel)
     : program_{program},
       kernel_{kernel},
       kernel_texture_{std::move(CreateKernelGlTexture(kernel))} {}
@@ -18,7 +18,7 @@ GlImageKernelProcessor::GlImageKernelProcessor(const GlKernelProcessorShaderProg
 static const int kPositionAttributeId = 0;
 static const int kTextureCoordinateAttributeId = 1;
 
-auto GlImageKernelProcessor::Process(const GlTexture& texture) -> GlTexture {
+auto GlTextureKernelProcessor::Process(const GlTexture& texture) -> GlTexture {
     GlTexture processing_texture = CreateProcessingTexture(texture);
     GLuint framebuffer = CreateProcessingFramebuffer(processing_texture);
 
@@ -40,10 +40,10 @@ auto GlImageKernelProcessor::Process(const GlTexture& texture) -> GlTexture {
     glBindTexture(GL_TEXTURE_2D, texture.id);
     glBindSampler(0, texture.id);
 
-    glUniform1i(program_.GetImageUniform(), 1);
+    glUniform1i(program_.GetKernelUniform(), 1);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, kernel_texture_.id);
-    glBindSampler(1, texture.id);
+    glBindSampler(1, kernel_texture_.id);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_vbo_id_);
     glDrawElements(GL_TRIANGLES, kImageVertexIndices.size(), GL_UNSIGNED_INT, nullptr);
@@ -54,15 +54,15 @@ auto GlImageKernelProcessor::Process(const GlTexture& texture) -> GlTexture {
     return processing_texture;
 }
 
-void GlImageKernelProcessor::CreateTextureBoxVao(const GlTexture& texture) {
+void GlTextureKernelProcessor::CreateTextureBoxVao(const GlTexture& texture) {
     float width = texture.width;
     float height = texture.width;
 
     std::vector<float> image_vertices = {
-        0.0f,   0.0f,   //
-        0.0f,   width,  //
-        height, 0.0f,   //
-        height, width,  //
+        -1.0f, -1.0f,  //
+        -1.0f, +1.0f,  //
+        +1.0f, -1.0f,  //
+        +1.0f, +1.0f,  //
     };
 
     std::vector<float> image_texture_coordinates = {
@@ -100,7 +100,7 @@ void GlImageKernelProcessor::CreateTextureBoxVao(const GlTexture& texture) {
     glBindVertexArray(0);
 }
 
-void GlImageKernelProcessor::CreateTextureBoxIndexVbo() {
+void GlTextureKernelProcessor::CreateTextureBoxIndexVbo() {
     glGenBuffers(1, &indices_vbo_id_);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_vbo_id_);
@@ -111,35 +111,38 @@ void GlImageKernelProcessor::CreateTextureBoxIndexVbo() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-auto GlImageKernelProcessor::CreateProcessingFramebuffer(const GlTexture& rendered_texture)
+auto GlTextureKernelProcessor::CreateProcessingFramebuffer(const GlTexture& rendered_texture)
     -> GLuint {
     GLuint framebuffer;
+    auto e = glGetError();
     glGenFramebuffers(1, &framebuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
-    const auto color_buffer = GL_COLOR_ATTACHMENT0;
-    glFramebufferTexture2D(GL_FRAMEBUFFER, color_buffer, GL_TEXTURE_2D, rendered_texture.id, 0);
-    glDrawBuffer(color_buffer);
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        exit(-2);
-    }
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, rendered_texture.id,
+                           0);
     return framebuffer;
 }
 
-auto GlImageKernelProcessor::CreateProcessingTexture(const GlTexture& texture) -> GlTexture {
+auto GlTextureKernelProcessor::CreateProcessingTexture(const GlTexture& texture) -> GlTexture {
     GLuint rendered_texture;
     glGenTextures(1, &rendered_texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture.width, texture.height, 0, GL_RGB,
+    glBindTexture(GL_TEXTURE_2D, rendered_texture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.width, texture.height, 0, GL_RGBA,
                  GL_UNSIGNED_BYTE, nullptr);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
     return {rendered_texture, texture.width, texture.height};
 }
 
-auto GlImageKernelProcessor::CreateKernelGlTexture(const Kernel& kernel) -> GlTexture {
+auto GlTextureKernelProcessor::CreateKernelGlTexture(const Kernel& kernel) -> GlTexture {
     GLuint kernel_texture;
-    glEnable(GL_TEXTURE_2D);
     glGenTextures(1, &kernel_texture);
     glBindTexture(GL_TEXTURE_2D, kernel_texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -152,6 +155,8 @@ auto GlImageKernelProcessor::CreateKernelGlTexture(const Kernel& kernel) -> GlTe
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32F, kernel.GetWidth(), kernel.GetHeight(), 0,
                  GL_DEPTH_COMPONENT, GL_FLOAT, kernel.GetData());
+
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     return {kernel_texture, static_cast<GLsizei>(kernel.GetWidth()),
             static_cast<GLsizei>(kernel.GetHeight())};

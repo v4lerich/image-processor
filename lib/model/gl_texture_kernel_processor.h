@@ -7,9 +7,9 @@
 
 namespace image_processor::model {
 
-class GlImageKernelProcessor final {
+class GlTextureKernelProcessor final {
   public:
-    explicit GlImageKernelProcessor(const GlKernelProcessorShaderProgram& program, const Kernel& kernel);
+    explicit GlTextureKernelProcessor(const GlKernelProcessorShaderProgram& program, const Kernel& kernel);
 
     auto Process(const GlTexture& texture) -> GlTexture;
 

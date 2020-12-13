@@ -16,3 +16,7 @@ target_link_libraries(${PROJECT_NAME}
 
 install(TARGETS ${PROJECT_NAME}
         DESTINATION bin)
+
+add_dependencies(${PROJECT_NAME}
+        image-processor-resources
+        fork-awesome)
