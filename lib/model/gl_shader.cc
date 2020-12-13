@@ -35,11 +35,14 @@ GlShader::GlShader(GLenum type, const Path& path) {
 }
 
 GlShader::GlShader(GlShader&& other) noexcept {
-    id_ = other.id_;
-    other.id_ = 0;
+    *this = std::move(other);
 }
 
-GlShader& GlShader::operator=(GlShader&& other) {}
+GlShader& GlShader::operator=(GlShader&& other) {
+    id_ = other.id_;
+    other.id_ = 0;
+    return *this;
+}
 
 GlShader::~GlShader() {
     if (id_ != 0) {

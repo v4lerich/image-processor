@@ -19,10 +19,10 @@ class GlShader {
     auto GetID() const -> GLuint { return id_; };
 
   private:
-    GLuint id_;
-
     GlShader(const GlShader& other) = default;
     GlShader& operator=(const GlShader& other) = default;
+
+    GLuint id_;
 };
 
 }  // namespace image_processor::model
