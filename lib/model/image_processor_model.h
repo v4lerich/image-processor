@@ -5,24 +5,12 @@
 
 #include <optional>
 
+#include "gl_kernel_processor_shader_program.h"
+#include "gl_texture.h"
+
 namespace image_processor::model {
 
-struct GlTexture {
-    GlTexture(GLuint id, GLsizei width, GLsizei height);
-    GlTexture(GlTexture&& other) noexcept ;
-    GlTexture& operator=(GlTexture&& other);
-    ~GlTexture();
-
-    GLuint id;
-    GLsizei width;
-    GLsizei height;
-
-  private:
-    GlTexture(const GlTexture& other) = default;
-    GlTexture& operator=(const GlTexture& other) = default;
-};
-
-class ImageProcessorModel {
+class ImageProcessorModel final {
   public:
     ImageProcessorModel();
 
@@ -31,6 +19,7 @@ class ImageProcessorModel {
 
   private:
     std::optional<GlTexture> initial_texture_{};
+    GlKernelProcessorShaderProgram program_;
 };
 
 }  // namespace image_processor::model

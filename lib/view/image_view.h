@@ -19,6 +19,7 @@ class ImageView final : public View {
   private:
     Model& model_;
     const std::string window_name_;
+    float zoom_{1.0f};
 };
 
 }  // namespace image_processor::view

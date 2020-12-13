@@ -1,4 +1,4 @@
-project(fork_awesome)
+project(fork-awesome)
 
-file(COPY ./Fork-Awesome/fonts/forkawesome-webfont.ttf
-        DESTINATION ${RESOURCE_PATH}/ForkAwesomeFont/)
+add_custom_target(${PROJECT_NAME}
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/Fork-Awesome/fonts/forkawesome-webfont.ttf ${RESOURCE_PATH}/fonts/ForkAwesomeFont/forkawesome-webfont.ttf)
