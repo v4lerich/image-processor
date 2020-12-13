@@ -33,7 +33,7 @@ class Kernel final {
     auto GetWidth() const -> size_t { return offset_width_ * 2 + 1; }
     auto GetHeight() const -> size_t { return offset_height_ * 2 + 1; }
 
-    auto GetData() const -> const Coefficient* { return coefficients_; }
+    auto GetData() const -> const Coefficient* { return coefficients_.data(); }
 
   private:
     auto EncodeIndex(Index delta_width, Index delta_height) const -> Index;

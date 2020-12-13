@@ -17,7 +17,6 @@ void ImageView::Render() {
             const auto imgui_image = texture->id;
             const ImVec2 image_size{static_cast<float>(texture->width),
                                     static_cast<float>(texture->height)};
-            glBindTexture(GL_TEXTURE_2D, imgui_image);
 
             ImGui::SetCursorPos((ImGui::GetWindowSize() - image_size) / 2);
             ImGui::Image((ImTextureID)imgui_image, image_size);
