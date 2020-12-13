@@ -2,8 +2,10 @@ project(image-processor-model)
 
 add_library(${PROJECT_NAME}
         image_processor_model.h image_processor_model.cc
+        gl_kernel_processor_shader_program.h gl_kernel_processor_shader_program.cc
         gl_texture_kernel_processor.h gl_texture_kernel_processor.cc
         gl_texture.h gl_texture.cc
+        gl_shader.h gl_shader.cc
         kernel.h kernel.cc)
 
 add_library(image-processor::model
