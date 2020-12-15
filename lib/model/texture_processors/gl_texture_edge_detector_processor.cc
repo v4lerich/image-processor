@@ -1,12 +1,15 @@
-#include "gl_texture_kernel_processor.h"
+#include "gl_texture_edge_detector_processor.h"
 
 namespace image_processor::model::texture_processors {
 
-GlTextureKernelProcessor::GlTextureKernelProcessor(
-    const shader_programs::GlKernelBasedShaderProgram& program, const Kernel& kernel)
-    : program_{program}, kernel_texture_{std::move(CreateKernelGlTexture(kernel))} {}
+GlTextureEdgeDetectorProcessor::GlTextureEdgeDetectorProcessor(
+    const shader_programs::GlEdgeDetectorShaderProgram& program, const Kernel& x_kernel,
+    const Kernel& y_kernel)
+    : program_{program},
+      x_kernel_texture_{std::move(CreateKernelGlTexture(x_kernel))},
+      y_kernel_texture_{std::move(CreateKernelGlTexture(y_kernel))} {}
 
-void GlTextureKernelProcessor::PrepareProcessing(const GlTexture& texture) {
+void GlTextureEdgeDetectorProcessor::PrepareProcessing(const GlTexture& texture) {
     glUseProgram(program_.GetID());
 
     glBindBuffer(GL_ARRAY_BUFFER, GetPositionsVbo());
@@ -23,10 +26,15 @@ void GlTextureKernelProcessor::PrepareProcessing(const GlTexture& texture) {
     glBindTexture(GL_TEXTURE_2D, texture.id);
     glBindSampler(0, texture.id);
 
-    glUniform1i(program_.GetKernelUniform(), 1);
+    glUniform1i(program_.GetXKernelUniform(), 1);
     glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, kernel_texture_.id);
-    glBindSampler(1, kernel_texture_.id);
+    glBindTexture(GL_TEXTURE_2D, x_kernel_texture_.id);
+    glBindSampler(1, x_kernel_texture_.id);
+
+    glUniform1i(program_.GetYKernelUniform(), 2);
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, y_kernel_texture_.id);
+    glBindSampler(2, y_kernel_texture_.id);
 }
 
 }  // namespace image_processor::model::texture_processors

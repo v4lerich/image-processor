@@ -19,6 +19,8 @@ class GlTextureProcessor {
     auto GetPositionsVbo() const -> GLuint { return positions_vbo_id_; }
     auto GetTextureCoordinatesVbo() const -> GLuint { return texture_cooordinates_vbo_id_; }
 
+    static auto CreateKernelGlTexture(const Kernel& kernel) -> GlTexture;
+
   private:
     static auto CreateProcessingTexture(const GlTexture& texture) -> GlTexture;
     static auto CreateProcessingFramebuffer(const GlTexture& rendered_texture) -> GLuint;

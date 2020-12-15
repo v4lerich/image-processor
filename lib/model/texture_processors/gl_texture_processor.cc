@@ -117,4 +117,25 @@ auto GlTextureProcessor::CreateProcessingTexture(const GlTexture& texture) -> Gl
     return {rendered_texture, texture.width, texture.height};
 }
 
+auto GlTextureProcessor::CreateKernelGlTexture(const Kernel& kernel) -> GlTexture {
+    GLuint kernel_texture;
+    glGenTextures(1, &kernel_texture);
+    glBindTexture(GL_TEXTURE_2D, kernel_texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+
+    std::array<float, 4> border_color{0.0f, 0.0f, 0.0f, 1.0f};
+    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, border_color.data());
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, kernel.GetWidth(), kernel.GetHeight(), 0, GL_RED,
+                 GL_FLOAT, kernel.GetData());
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    return {kernel_texture, static_cast<GLsizei>(kernel.GetWidth()),
+            static_cast<GLsizei>(kernel.GetHeight())};
+}
+
 }  // namespace image_processor::model::texture_processors

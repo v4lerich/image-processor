@@ -17,7 +17,7 @@ void main() {
 
     vec3 color = vec3(0);
     for (int dx = -kernel_half_size.x; dx <= kernel_half_size.x; dx += 1) {
-        for (int dy = -kernel_half_size.y; dy <= kernel_size.y; dy += 1) {
+        for (int dy = -kernel_half_size.y; dy <= kernel_half_size.y; dy += 1) {
             vec2 image_delta = in_Data.texture_coordinate + vec2(dx, dy) * image_texel_size;
             vec2 kernel_delta = (ivec2(dx, dy) + kernel_half_size) * kernel_texel_size + kernel_texel_size / 2;
 

@@ -11,17 +11,15 @@ namespace image_processor::model::texture_processors {
 
 class GlTextureKernelProcessor : public GlTextureProcessor {
   public:
-    GlTextureKernelProcessor(const shader_programs::GlKernelBasedShaderProgram& program, const Kernel& kernel);
+    GlTextureKernelProcessor(const shader_programs::GlKernelBasedShaderProgram& program,
+                             const Kernel& kernel);
 
   protected:
     void PrepareProcessing(const GlTexture& texture) override;
 
   private:
-    static auto CreateKernelGlTexture(const Kernel& kernel) -> GlTexture;
-
-    GlTexture kernel_texture_;
+    const GlTexture kernel_texture_;
     const shader_programs::GlKernelBasedShaderProgram& program_;
-    const Kernel& kernel_;
 };
 
 }  // namespace image_processor::model::texture_processors
