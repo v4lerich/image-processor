@@ -12,7 +12,6 @@
 
 const ivec2 kernel_half_size = ivec2(KERNEL_HALF_SIZE_X, KERNEL_HALF_SIZE_Y);
 const ivec2 kernel_size = ivec2(KERNEL_SIZE_X, KERNEL_SIZE_Y);
-const vec3 color_weight = vec3(0.3, 0.59, 0.11) / 3;
 
 uniform sampler2D image;
 
@@ -33,7 +32,7 @@ int quickPartition(int left, int right) {
     int pivotIndex = left;
 
     for (int i = left; i < right; i++) {
-        if (colors[i].a < pivotValue.a) {
+        if (colors[i].a <= pivotValue.a) {
             swap(colors[i], colors[pivotIndex]);
             pivotIndex++;
         }
@@ -45,10 +44,11 @@ int quickPartition(int left, int right) {
 
 vec4 quickMedian() {
     int left = 0;
-    int right = kernel_size.x * kernel_size.y;
+    int right = kernel_size.x * kernel_size.y - 1;
     int k = (right + left) / 2;
 
-    while (left < right) {
+    int iter = 1;
+    while (left <= right) {
         int index = quickPartition(left, right);
 
         if (index == k) {
@@ -59,7 +59,11 @@ vec4 quickMedian() {
             right = index - 1;
         }
     }
-    return vec4(-1);
+    return colors[left];
+}
+
+float grayscale(vec3 color) {
+    return dot(color, vec3(0.3, 0.59, 0.11) / 3);
 }
 
 void main() {
@@ -73,11 +77,12 @@ void main() {
             vec2 image_delta = in_Data.texture_coordinate + vec2(dx, dy) * image_texel_size;
             vec3 color = texture2D(image, image_delta).rgb;
 
-            colors[index] = vec4(color, dot(color_weight, color));
+            colors[index] = vec4(color, grayscale(color));
             index++;
         }
     }
 
     vec4 median_color = quickMedian();
+//    vec4 median_color = colors[0];
     gl_FragColor = vec4(median_color.rgb, 1.0);
 }
