@@ -5,8 +5,10 @@
 
 #include <optional>
 
-#include "gl_kernel_processor_shader_program.h"
 #include "gl_texture.h"
+#include "shader_programs/gl_average_shader_program.h"
+#include "shader_programs/gl_kernel_based_shader_program.h"
+#include "shader_programs/gl_edge_detector_shader_program.h"
 
 namespace image_processor::model {
 
@@ -19,7 +21,9 @@ class ImageProcessorModel final {
 
   private:
     std::optional<GlTexture> initial_texture_{};
-    GlKernelProcessorShaderProgram program_;
+    shader_programs::GlKernelBasedShaderProgram kernel_based_program_{};
+    shader_programs::GlAverageShaderProgram average_program_{};
+    shader_programs::GlEdgeDetectorShaderProgram edge_detector_program_{};
 };
 
 }  // namespace image_processor::model
