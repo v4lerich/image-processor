@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 set(CMAKE_VERBOSE_MAKEFILE OFF)
 project(ImageProcessor
-        VERSION 1.0
+        VERSION 1.1
         LANGUAGES CXX)
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
