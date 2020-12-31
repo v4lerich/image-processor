@@ -14,15 +14,15 @@ void GlTextureAverageProcessor::PrepareProcessing(const GlTexture& texture) {
     glVertexAttribPointer(program_.GetPositionsAttribute(), 2, GL_FLOAT, GL_FALSE, 0, nullptr);
     glEnableVertexAttribArray(program_.GetPositionsAttribute());
 
-    glBindBuffer(GL_ARRAY_BUFFER, GetPositionsVbo());
+    glBindBuffer(GL_ARRAY_BUFFER, GetTextureCoordinatesVbo());
     glVertexAttribPointer(program_.GetTextureCoordinateAttribute(), 2, GL_FLOAT, GL_FALSE, 0,
                           nullptr);
     glEnableVertexAttribArray(program_.GetTextureCoordinateAttribute());
 
     glUniform1i(program_.GetImageUniform(), 0);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture.id);
-    glBindSampler(0, texture.id);
+    glBindTexture(GL_TEXTURE_2D, texture.GetId());
+    glBindSampler(0, texture.GetId());
 
     glUniform2i(program_.GetKernelHalfSizeUniform(), width_half_size_, height_half_size_);
 }

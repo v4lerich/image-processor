@@ -3,21 +3,22 @@
 
 #include <glad/gl.h>
 
+#include <memory>
+
 namespace image_processor::model {
 
 struct GlTexture {
     GlTexture(GLuint id, GLsizei width, GLsizei height);
-    GlTexture(GlTexture&& other) noexcept;
-    GlTexture& operator=(GlTexture&& other);
-    ~GlTexture();
 
-    GLuint id;
+    auto GetId() const -> GLuint;
+
     GLsizei width;
     GLsizei height;
 
   private:
-    GlTexture(const GlTexture& other) = default;
-    GlTexture& operator=(const GlTexture& other) = default;
+    static void DeleteGlTexture(GLuint* texture_id);
+
+    std::shared_ptr<GLuint> id_;
 };
 
 }  // namespace image_processor::model

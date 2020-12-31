@@ -1,20 +1,27 @@
 #ifndef IMAGEPROCESSOR_VIEW_H
 #define IMAGEPROCESSOR_VIEW_H
 
+#include <imgui.h>
+
 namespace image_processor::view {
 
 class View {
   public:
-    View() = default;
+    View();
     virtual ~View() = default;
 
-    virtual void Render() = 0;
+    void Render();
     virtual auto WantClose() -> bool;
 
   protected:
+    static auto NextId() -> ImGuiID;
+
     void SetWantClose();
+    virtual void RenderIndexed() = 0;
 
   private:
+    static ImGuiID id_counter_;
+    ImGuiID id_;
     bool want_close_{false};
 };
 

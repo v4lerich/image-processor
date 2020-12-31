@@ -17,25 +17,4 @@ GlAverageShaderProgram::GlAverageShaderProgram()
     image_uniform_ = glGetUniformLocation(GetID(), "image");
 }
 
-GlAverageShaderProgram::~GlAverageShaderProgram() = default;
-
-GlAverageShaderProgram::GlAverageShaderProgram(GlAverageShaderProgram&& other) noexcept
-    : GlShaderProgram{std::move(other)} {
-    positions_attribute_ = other.positions_attribute_;
-    texture_coordinates_attribute_ = other.texture_coordinates_attribute_;
-
-    kernel_half_size_uniform_ = other.kernel_half_size_uniform_;
-    image_uniform_ = other.image_uniform_;
-}
-
-GlAverageShaderProgram& GlAverageShaderProgram::operator=(GlAverageShaderProgram&& other) {
-    positions_attribute_ = other.positions_attribute_;
-    texture_coordinates_attribute_ = other.texture_coordinates_attribute_;
-
-    kernel_half_size_uniform_ = other.kernel_half_size_uniform_;
-    image_uniform_ = other.image_uniform_;
-    *this = std::move(other);
-    return *this;
-}
-
 }  // namespace image_processor::model::shader_programs

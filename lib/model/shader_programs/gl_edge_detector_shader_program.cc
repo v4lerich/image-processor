@@ -18,29 +18,4 @@ GlEdgeDetectorShaderProgram::GlEdgeDetectorShaderProgram()
     y_kernel_uniform_ = glGetUniformLocation(GetID(), "y_kernel");
 }
 
-GlEdgeDetectorShaderProgram::~GlEdgeDetectorShaderProgram() = default;
-
-GlEdgeDetectorShaderProgram::GlEdgeDetectorShaderProgram(
-    GlEdgeDetectorShaderProgram&& other) noexcept
-    : GlShaderProgram{std::move(other)} {
-    positions_attribute_ = other.positions_attribute_;
-    texture_coordinates_attribute_ = other.texture_coordinates_attribute_;
-
-    image_uniform_ = other.image_uniform_;
-    x_kernel_uniform_ = other.x_kernel_uniform_;
-    y_kernel_uniform_ = other.y_kernel_uniform_;
-}
-
-GlEdgeDetectorShaderProgram& GlEdgeDetectorShaderProgram::operator=(
-    GlEdgeDetectorShaderProgram&& other) {
-    positions_attribute_ = other.positions_attribute_;
-    texture_coordinates_attribute_ = other.texture_coordinates_attribute_;
-
-    image_uniform_ = other.image_uniform_;
-    x_kernel_uniform_ = other.x_kernel_uniform_;
-    y_kernel_uniform_ = other.y_kernel_uniform_;
-    *this = std::move(other);
-    return *this;
-}
-
 }  // namespace image_processor::model::shader_programs

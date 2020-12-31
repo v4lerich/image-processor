@@ -17,37 +17,29 @@ auto ImageProcessorModel::GetInitialTexture() const -> const std::optional<GlTex
     return initial_texture_;
 }
 
+auto ImageProcessorModel::GetResultTexture() const -> const std::optional<GlTexture>& {
+    return result_texture_;
+}
+
 void ImageProcessorModel::SetInitialTexture(GlTexture texture) {
-    //    std::vector<std::vector<float>> coefficients = {
-    //        {1.0f, +1.0f, 1.0f},  //
-    //        {1.0f, -8.0f, 1.0f},  //
-    //        {1.0f, +1.0f, 1.0f},  //
-    //    };
-    //    Kernel kernel{coefficients};
-    //    texture_processors::GlTextureKernelProcessor processor{program_, kernel};
+    initial_texture_ = std::make_optional(std::move(texture));
+    ProcessTexture();
+}
 
-    //    texture_processors::GlTextureAverageProcessor processor{average_program_, 10, 2};
+auto ImageProcessorModel::GetTextureProcessorFactory()
+    -> texture_processors::GlTextureProcessorFactory& {
+    return texture_processor_factory_;
+}
 
-//    std::vector<std::vector<float>> x_coefficients = {
-//        {-1.0f, -1.0f, -1.0f},  //
-//        {+0.0f, +0.0f, +0.0f},  //
-//        {+1.0f, +1.0f, +1.0f},  //
-//    };
-//    Kernel x_kernel{x_coefficients};
-//    std::vector<std::vector<float>> y_coefficients = {
-//        {-1.0f, +0.0f, +1.0f},  //
-//        {-1.0f, +0.0f, +1.0f},  //
-//        {-1.0f, +0.0f, +1.0f},  //
-//    };
-//    Kernel y_kernel{x_coefficients};
-//    texture_processors::GlTextureEdgeDetectorProcessor processor{edge_detector_program_, x_kernel,
-//                                                                 y_kernel};
-
-    texture_processors::GlTextureMedianProcessor processor{2, 2};
-
-    auto processed_texture = processor.Process(texture);
-    initial_texture_ = std::make_optional(std::move(processed_texture));
-    //    initial_texture_ = std::make_optional(std::move(texture));
+void ImageProcessorModel::ProcessTexture() {
+    if (initial_texture_) {
+        result_texture_ = initial_texture_;
+        for (const auto& texture_processor : texture_processors_) {
+            result_texture_ = texture_processor->Process(*result_texture_);
+        }
+    } else {
+        result_texture_ = std::nullopt;
+    }
 }
 
 }  // namespace image_processor::model

@@ -19,26 +19,4 @@ GlKernelBasedShaderProgram::GlKernelBasedShaderProgram()
     image_uniform_ = glGetUniformLocation(GetID(), "image");
 }
 
-GlKernelBasedShaderProgram::~GlKernelBasedShaderProgram() = default;
-
-GlKernelBasedShaderProgram::GlKernelBasedShaderProgram(GlKernelBasedShaderProgram&& other) noexcept
-    : GlShaderProgram{std::move(other)} {
-    positions_attribute_ = other.positions_attribute_;
-    texture_coordinates_attribute_ = other.texture_coordinates_attribute_;
-
-    kernel_uniform_ = other.kernel_uniform_;
-    image_uniform_ = other.image_uniform_;
-}
-
-GlKernelBasedShaderProgram& GlKernelBasedShaderProgram::operator=(
-    GlKernelBasedShaderProgram&& other) {
-    positions_attribute_ = other.positions_attribute_;
-    texture_coordinates_attribute_ = other.texture_coordinates_attribute_;
-
-    kernel_uniform_ = other.kernel_uniform_;
-    image_uniform_ = other.image_uniform_;
-    *this = std::move(other);
-    return *this;
-}
-
 }  // namespace image_processor::model::shader_programs

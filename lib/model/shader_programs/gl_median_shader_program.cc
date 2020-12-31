@@ -21,26 +21,6 @@ GlMedianShaderProgram::GlMedianShaderProgram(unsigned int kernel_half_size_x,
     image_uniform_ = glGetUniformLocation(GetID(), "image");
 }
 
-GlMedianShaderProgram::~GlMedianShaderProgram() = default;
-
-GlMedianShaderProgram::GlMedianShaderProgram(GlMedianShaderProgram&& other) noexcept
-    : GlShaderProgram{std::move(other)} {
-    positions_attribute_ = other.positions_attribute_;
-    texture_coordinates_attribute_ = other.texture_coordinates_attribute_;
-
-    kernel_half_size_uniform_ = other.kernel_half_size_uniform_;
-    image_uniform_ = other.image_uniform_;
-}
-
-GlMedianShaderProgram& GlMedianShaderProgram::operator=(GlMedianShaderProgram&& other) {
-    positions_attribute_ = other.positions_attribute_;
-    texture_coordinates_attribute_ = other.texture_coordinates_attribute_;
-
-    kernel_half_size_uniform_ = other.kernel_half_size_uniform_;
-    image_uniform_ = other.image_uniform_;
-    *this = std::move(other);
-    return *this;
-}
 auto GlMedianShaderProgram::InjectParameters(const Path& path, unsigned int kernel_half_size_x,
                                              unsigned int kernel_half_size_y) -> std::string {
     auto source = GlShader::LoadShader(path);

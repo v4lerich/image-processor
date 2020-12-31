@@ -15,12 +15,13 @@ class FileDialogView final : public View {
     using Model = model::ImageProcessorModel;
     explicit FileDialogView(Model& model);
 
-    void Render() override;
-
     void StartSavingImage();
     void StartLoadingImage();
 
     auto CanSaveImage() -> bool;
+
+  protected:
+    void RenderIndexed() override;
 
   private:
     void RenderSavingImageDialog();
