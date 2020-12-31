@@ -9,19 +9,15 @@ namespace image_processor::model::shader_programs {
 
 class GlMedianShaderProgram final : public GlShaderProgram {
   public:
-    using Path = std::filesystem::path;
-
-    GlMedianShaderProgram(unsigned int kernel_half_size_x, unsigned int kernel_half_size_y);
+    GlMedianShaderProgram();
 
     auto GetPositionsAttribute() const -> GLuint { return positions_attribute_; }
     auto GetTextureCoordinateAttribute() const -> GLuint { return texture_coordinates_attribute_; }
 
+    auto GetKernelHalfSizeUniform() const -> GLuint { return kernel_half_size_uniform_; }
     auto GetImageUniform() const -> GLuint { return image_uniform_; }
 
   private:
-    static auto InjectParameters(const Path& path, unsigned int kernel_half_size_x,
-                                 unsigned int kernel_half_size_y) -> std::string;
-
     GLuint positions_attribute_;
     GLuint texture_coordinates_attribute_;
 

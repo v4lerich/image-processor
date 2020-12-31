@@ -27,8 +27,7 @@ class GlTextureProcessorFactory {
     auto CreateKernelTextureProcessor(const Kernel& kernel) -> std::unique_ptr<GlTextureProcessor>;
 
   private:
-    std::map<std::pair<unsigned int, unsigned int>, shader_programs::GlMedianShaderProgram>
-        median_shader_programs_{};
+    shader_programs::GlMedianShaderProgram median_shader_program_{};
     shader_programs::GlKernelBasedShaderProgram kernel_based_program_{};
     shader_programs::GlAverageShaderProgram average_program_{};
     shader_programs::GlEdgeDetectorShaderProgram edge_detector_program_{};

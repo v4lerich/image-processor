@@ -10,10 +10,10 @@ MedianTextureProcessorView::MedianTextureProcessorView(Factory& factory)
 void MedianTextureProcessorView::RenderParameters() {
     bool changed = false;
     changed |= ImGui::InputInt("Half width", &half_width_, 1, 0);
-    half_width_ = std::clamp(half_width_, 0, 3);
+    half_width_ = std::clamp(half_width_, 0, 2);
 
     changed |= ImGui::InputInt("Half height", &half_height_, 1, 0);
-    half_height_= std::clamp(half_height_, 0, 3);
+    half_height_= std::clamp(half_height_, 0, 2);
 
     if (changed) SetChanged();
 }

@@ -10,16 +10,8 @@ namespace image_processor::model::texture_processors {
 auto GlTextureProcessorFactory::CreateMedianTextureProcessor(unsigned int half_width,
                                                              unsigned int half_height)
     -> std::unique_ptr<GlTextureProcessor> {
-    const auto size = std::make_pair(half_width, half_height);
-    auto it = median_shader_programs_.find(size);
-    if (it == std::end(median_shader_programs_)) {
-        it = median_shader_programs_
-                 .emplace(size, shader_programs::GlMedianShaderProgram(half_width, half_height))
-                 .first;
-    }
-
-    const auto& program = it->second;
-    return std::make_unique<GlTextureMedianProcessor>(program);
+    return std::make_unique<GlTextureMedianProcessor>(median_shader_program_, half_width,
+                                                      half_height);
 }
 
 auto GlTextureProcessorFactory::CreateAverageTextureProcessor(unsigned int half_width,
