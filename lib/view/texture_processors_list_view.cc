@@ -35,12 +35,7 @@ static const std::vector<TextureProcessorFactoryView> kTextureProcessorFactoryVi
      }}};
 
 TextureProcessorsListView::TextureProcessorsListView(Model& model, std::string window_name)
-    : model_{model}, window_name_(std::move(window_name)) {
-    //    auto item = std::make_unique<texture_processors::MedianTextureProcessorView>(model_);
-    //    Append(std::move(item));
-    //    auto item2 = std::make_unique<ItemView>();
-    //    Append(std::move(item2));
-}
+    : model_{model}, window_name_(std::move(window_name)) {}
 
 void TextureProcessorsListView::RenderIndexed() {
     ImGuiFocusedFlags window_flags{};
@@ -55,14 +50,6 @@ void TextureProcessorsListView::RenderIndexed() {
         for (auto& image_processor_view : image_processor_views_) {
             image_processor_view->Render();
         }
-
-        //
-        //        image_processor_views_.erase(
-        //            std::remove_if(begin(image_processor_views_), end(image_processor_views_),
-        //                           [](const auto& image_processor_view) {
-        //                               return image_processor_view->WantClose();
-        //                           }),
-        //            end(image_processor_views_));
 
         ImGui::End();
     }

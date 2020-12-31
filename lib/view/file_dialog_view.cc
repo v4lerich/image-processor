@@ -73,7 +73,7 @@ void FileDialogView::RenderSavingImageDialog() {
 }
 
 void FileDialogView::SaveImage() {
-    SDL_Surface* image = StoreGlImage(model_.GetInitialTexture().value());
+    SDL_Surface* image = StoreGlImage(model_.GetResultTexture().value());
 
     auto extension = file_path_.extension().string();
     std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);

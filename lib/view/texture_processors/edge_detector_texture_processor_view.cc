@@ -55,11 +55,6 @@ EdgeDetectorTextureProcessorView::EdgeDetectorTextureProcessorView(Factory& fact
 
 void EdgeDetectorTextureProcessorView::RenderParameters() {
     bool changed = false;
-    //    changed |= ImGui::InputInt("Half width", &half_width_, 1, 0);
-    //    half_width_ = std::clamp(half_width_, 0, 10);
-    //
-    //    changed |= ImGui::InputInt("Half height", &half_height_, 1, 0);
-    //    half_height_ = std::clamp(half_height_, 0, 10);
 
     const auto chosen_edge_detector = kEdgeDetectorTypes.find(edge_detector_type_)->second;
     if (ImGui::BeginCombo("Type", chosen_edge_detector.title.c_str())) {
@@ -75,7 +70,7 @@ void EdgeDetectorTextureProcessorView::RenderParameters() {
     }
 
     if (changed) SetChanged();
-}  // namespace image_processor::view::texture_processors
+}
 
 auto EdgeDetectorTextureProcessorView::GetTitle() -> std::string { return "Edge detector filter"; }
 

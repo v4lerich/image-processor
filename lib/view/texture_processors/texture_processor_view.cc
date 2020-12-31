@@ -2,6 +2,7 @@
 
 #include <imgui.h>
 #include <imgui_internal.h>
+#include <imgui_panel.h>
 #include <texture_processors/gl_texture_median_processor.h>
 
 namespace image_processor::view::texture_processors {
@@ -20,35 +21,25 @@ auto TextureProcessorView::WantMoveDown() -> bool { return want_move_down_; }
 
 void TextureProcessorView::RenderIndexed() {
     changed_ = false;
-    const auto start_position = ImGui::GetCursorScreenPos();
-    ImGui::SetCursorScreenPos(start_position + kPadding);
-
-    ImGui::BeginGroup();
+    ImGui::BeginGroupPanel("Kek", {0, 0});
 
     ImGui::BeginGroup();
     ImGui::Text("%s", GetTitle().c_str());
     RenderParameters();
     ImGui::EndGroup();
 
-    ImGui::SameLine();
+    ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::GetFrameHeight() - 10);
     ImGui::BeginGroup();
     if (ImGui::Button(" x ##close")) SetWantClose();
     want_move_up_ = ImGui::ArrowButton("##arrow_up", ImGuiDir_Up);
     want_move_down_ = ImGui::ArrowButton("##arrow_down", ImGuiDir_Down);
     ImGui::EndGroup();
 
-    ImGui::EndGroup();
-
-    const auto end_position = ImGui::GetItemRectMax() + kPadding;
-    ImGui::Dummy(kPadding);
-    ImGui::GetWindowDrawList()->AddRect(start_position, end_position,
-                                        ImColor(ImGui::GetStyle().Colors[ImGuiCol_Border]));
+    ImGui::EndGroupPanel();
 }
 
 auto TextureProcessorView::GetFactory() -> TextureProcessorView::Factory& { return factory_; }
 
-void TextureProcessorView::SetChanged() {
-    changed_ = true;
-}
+void TextureProcessorView::SetChanged() { changed_ = true; }
 
 }  // namespace image_processor::view::texture_processors

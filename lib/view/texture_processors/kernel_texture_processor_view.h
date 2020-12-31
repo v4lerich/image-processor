@@ -17,8 +17,12 @@ class KernelTextureProcessorView final : public TextureProcessorView {
     auto CreateTextureProcessor() -> std::unique_ptr<TextureProcessor> override;
 
   private:
+    void UpdateCoefficientsSize();
+
     int half_width_{0};
     int half_height_{0};
+
+    std::vector<std::vector<float>> coefficients_;
 };
 
 }  // namespace image_processor::view::texture_processors

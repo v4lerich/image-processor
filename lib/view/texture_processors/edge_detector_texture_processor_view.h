@@ -24,8 +24,6 @@ class EdgeDetectorTextureProcessorView final : public TextureProcessorView {
 
   private:
     EdgeDetectorType edge_detector_type_{};
-    //    int half_width_{0};
-    //    int half_height_{0};
 };
 
 }  // namespace image_processor::view::texture_processors
