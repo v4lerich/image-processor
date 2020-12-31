@@ -72,8 +72,8 @@ void main() {
 
     vec3 color = vec3(0);
     int index = 0;
-    for (int dx = -kernel_half_size.x; dx < kernel_half_size.x; dx += 1) {
-        for (int dy = -kernel_half_size.y; dy < kernel_half_size.y; dy += 1) {
+    for (int dx = -kernel_half_size.x; dx <= kernel_half_size.x; dx += 1) {
+        for (int dy = -kernel_half_size.y; dy <= kernel_half_size.y; dy += 1) {
             vec2 image_delta = in_Data.texture_coordinate + vec2(dx, dy) * image_texel_size;
             vec3 color = texture2D(image, image_delta).rgb;
 

@@ -4,18 +4,12 @@
 
 namespace image_processor::model {
 GlTexture::GlTexture(GLuint id, GLsizei width, GLsizei height)
-    : id(id), width(width), height(height) {}
+    : id_(new GLuint(id), DeleteGlTexture), width{width}, height{height} {}
 
-GlTexture::GlTexture(GlTexture&& other) noexcept { *this = std::move(other); }
+void GlTexture::DeleteGlTexture(GLuint* texture_id) {
+    if (*texture_id != 0) glDeleteTextures(1, texture_id);
+}
 
-GlTexture::~GlTexture() {
-    if (id != 0) {
-        glDeleteTextures(1, &id);
-    }
-}
-GlTexture& GlTexture::operator=(GlTexture&& other) {
-    *this = other;
-    other.id = 0;
-    return *this;
-}
+auto GlTexture::GetId() const -> GLuint { return *id_; }
+
 }  // namespace image_processor::model

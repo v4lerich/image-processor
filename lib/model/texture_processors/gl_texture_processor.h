@@ -15,7 +15,7 @@ class GlTextureProcessor {
     auto Process(const GlTexture& texture) -> GlTexture;
 
   protected:
-    virtual void PrepareProcessing(const GlTexture& texture) = 0;
+    virtual void PrepareProcessing(const GlTexture& texture);
     auto GetPositionsVbo() const -> GLuint { return positions_vbo_id_; }
     auto GetTextureCoordinatesVbo() const -> GLuint { return texture_cooordinates_vbo_id_; }
 

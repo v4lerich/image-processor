@@ -5,21 +5,8 @@ namespace image_processor::model::shader_programs {
 GlShaderProgram::GlShaderProgram(std::initializer_list<GlShader> shaders)
     : GlShaderProgram(shaders.begin(), shaders.end()) {}
 
-GlShaderProgram::GlShaderProgram(GlShaderProgram&& other) noexcept
-    : program_id_{other.program_id_} {
-    other.program_id_ = 0;
-}
-
-GlShaderProgram& GlShaderProgram::operator=(GlShaderProgram&& other) {
-    program_id_ = other.program_id_;
-    other.program_id_ = 0;
-    return *this;
-}
-
-GlShaderProgram::~GlShaderProgram() {
-    if (program_id_ != 0) {
-        glDeleteProgram(program_id_);
-    }
+void GlShaderProgram::DeleteShaderProgram(GLuint* program_id) {
+    if (*program_id != 0) glDeleteProgram(*program_id);
 }
 
 }  // namespace image_processor::model::shader_programs

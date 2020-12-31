@@ -16,7 +16,7 @@ class Kernel final {
     template <class T>
     using Vector2D = std::vector<std::vector<T>>;
 
-    Kernel(size_t offset_width, size_t offset_height);
+    Kernel(size_t offset_width = 0, size_t offset_height = 0);
 
     Kernel(const Vector2D<Coefficient>& coefficients) {
         offset_height_ = coefficients.size() / 2;

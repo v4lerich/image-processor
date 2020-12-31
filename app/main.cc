@@ -1,5 +1,5 @@
+#include <image_processor_application_view.h>
 #include <image_processor_model.h>
-#include <image_processor_view.h>
 
 #include <memory>
 
@@ -17,7 +17,7 @@ auto main(int argc, char **argv) -> int {
     }
 
     model::ImageProcessorModel model{};
-    auto image_processor = std::make_unique<view::ImageProcessorView>(model);
+    auto image_processor = std::make_unique<view::ImageProcessorApplicationView>(model);
     application.AddView(std::move(image_processor));
 
     return_code = application.Run();

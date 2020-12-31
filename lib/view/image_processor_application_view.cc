@@ -1,4 +1,4 @@
-#include "image_processor_view.h"
+#include "image_processor_application_view.h"
 
 #include <imgui.h>
 #include <imgui_internal.h>
@@ -9,11 +9,14 @@ namespace image_processor::view {
 
 const std::string kDockspaceName = "main_dockspace";
 const std::string kImageViewWindowName = "image_view";
+const std::string kTextureProcessorsListView = "texture_processors";
 
-ImageProcessorView::ImageProcessorView(ImageProcessorView::Model& model)
-    : image_view_{kImageViewWindowName, model}, file_dialog_view_{model} {}
+ImageProcessorApplicationView::ImageProcessorApplicationView(Model& model)
+    : image_view_{kImageViewWindowName, model},
+      texture_processors_list_view_{model, kTextureProcessorsListView},
+      file_dialog_view_{model} {}
 
-void ImageProcessorView::Render() {
+void ImageProcessorApplicationView::RenderIndexed() {
     if (BeginDockingWindow()) {
         RenderMenuBar();
 
@@ -23,13 +26,16 @@ void ImageProcessorView::Render() {
         ImGui::SetNextWindowClass(&window_class);
         image_view_.Render();
 
-        file_dialog_view_.Render();
+        ImGui::SetNextWindowClass(&window_class);
+        texture_processors_list_view_.Render();
 
         EndDockingWindow();
     }
+
+    file_dialog_view_.Render();
 }
 
-auto ImageProcessorView::BeginDockingWindow() -> bool {
+auto ImageProcessorApplicationView::BeginDockingWindow() -> bool {
     ImGuiViewport* viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowPos(viewport->GetWorkPos());
     ImGui::SetNextWindowSize(viewport->GetWorkSize());
@@ -42,19 +48,17 @@ auto ImageProcessorView::BeginDockingWindow() -> bool {
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0F);
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{});
+    bool show = ImGui::Begin("DockSpace Demo", nullptr, window_flags);
+    ImGui::PopStyleVar(2);
 
-    if (ImGui::Begin("DockSpace Demo", nullptr, window_flags)) {
-        ImGui::PopStyleVar();
-
+    if (show) {
         InitDockingLayout();
         ImGui::DockSpace(ImGui::GetID(kDockspaceName.c_str()), {0, 0});
-        return true;
     }
-    ImGui::PopStyleVar();
-    return false;
+    return show;
 }
 
-void ImageProcessorView::InitDockingLayout() {
+void ImageProcessorApplicationView::InitDockingLayout() {
     if (ImGui::DockBuilderGetNode(ImGui::GetID(kDockspaceName.c_str())) == nullptr) {
         ImGuiID dockspace_id = ImGui::GetID(kDockspaceName.c_str());
         ImGui::DockBuilderRemoveNode(dockspace_id);
@@ -63,20 +67,17 @@ void ImageProcessorView::InitDockingLayout() {
 
         ImGuiID dock_main_id = dockspace_id;
         ImGuiID dock_left_id =
-            ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Left, 0, nullptr, &dock_main_id);
+            ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Left, 0.3f, nullptr, &dock_main_id);
 
-        //        ImGui::DockBuilderDockWindow(player_view_.WindowName().c_str(), dock_up_id);
+        ImGui::DockBuilderDockWindow(kTextureProcessorsListView.c_str(), dock_left_id);
         ImGui::DockBuilderDockWindow(kImageViewWindowName.c_str(), dock_main_id);
         ImGui::DockBuilderFinish(dockspace_id);
     }
 }
 
-void ImageProcessorView::EndDockingWindow() {
-    ImGui::End();
-    ImGui::PopStyleVar();
-}
+void ImageProcessorApplicationView::EndDockingWindow() { ImGui::End(); }
 
-void ImageProcessorView::RenderMenuBar() {
+void ImageProcessorApplicationView::RenderMenuBar() {
     if (ImGui::BeginMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Open", nullptr, false)) {

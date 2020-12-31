@@ -27,7 +27,7 @@ static const std::string kOpenImageFilters = "Image files (*.png *.jpg *.jpeg){.
 
 FileDialogView::FileDialogView(Model& model) : model_(model) {}
 
-void FileDialogView::Render() {
+void FileDialogView::RenderIndexed() {
     RenderLoadingImageDialog();
     RenderSavingImageDialog();
     RenderErrorDialog();
@@ -164,7 +164,7 @@ SDL_Surface* FileDialogView::StoreGlImage(const model::GlTexture& texture) {
                                                 SDL_PIXELFORMAT_RGBA32);
 
     SDL_LockSurface(image);
-    glBindTexture(GL_TEXTURE_2D, texture.id);
+    glBindTexture(GL_TEXTURE_2D, texture.GetId());
     glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
     SDL_UnlockSurface(image);
     return image;

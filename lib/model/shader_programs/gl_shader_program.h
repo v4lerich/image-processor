@@ -16,41 +16,35 @@ class GlShaderProgram {
   public:
     template <GlShaderIterator Iterator>
     GlShaderProgram(Iterator first, Iterator last) {
-        program_id_ = glCreateProgram();
+        program_id_ = std::shared_ptr<GLuint>(new GLuint(glCreateProgram()), DeleteShaderProgram);
         for (Iterator it = first; it != last; ++it) {
-            glAttachShader(program_id_, it->GetID());
+            glAttachShader(*program_id_, it->GetID());
         }
-        glLinkProgram(program_id_);
+        glLinkProgram(*program_id_);
 
         GLint link_status;
-        glGetProgramiv(program_id_, GL_LINK_STATUS, &link_status);
+        glGetProgramiv(*program_id_, GL_LINK_STATUS, &link_status);
 
         if (link_status != GL_TRUE) {
             int info_log_length;
-            glGetProgramiv(program_id_, GL_INFO_LOG_LENGTH, &info_log_length);
+            glGetProgramiv(*program_id_, GL_INFO_LOG_LENGTH, &info_log_length);
 
             std::string info_log;
             info_log.resize(info_log_length);
-            glGetProgramInfoLog(program_id_, info_log_length, nullptr, info_log.data());
+            glGetProgramInfoLog(*program_id_, info_log_length, nullptr, info_log.data());
 
-            glDeleteProgram(program_id_);
+            glDeleteProgram(*program_id_);
             throw std::runtime_error("Program link error: " + info_log);
         }
     }
-
     GlShaderProgram(std::initializer_list<GlShader> shaders);
 
-        GlShaderProgram(GlShaderProgram&& other) noexcept;
-    GlShaderProgram& operator=(GlShaderProgram&& other);
-    virtual ~GlShaderProgram();
-
-    auto GetID() const -> GLuint { return program_id_; }
+    auto GetID() const -> GLuint { return *program_id_; }
 
   private:
-    GlShaderProgram(const GlShaderProgram& other) = default;
-    GlShaderProgram& operator=(const GlShaderProgram& other) = default;
+    static void DeleteShaderProgram(GLuint* program_id);
 
-    GLuint program_id_;
+    std::shared_ptr<GLuint> program_id_;
 };
 
 }  // namespace image_processor::model::shader_programs

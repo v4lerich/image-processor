@@ -11,13 +11,13 @@ namespace image_processor::model::texture_processors {
 
 class GlTextureMedianProcessor : public GlTextureProcessor {
   public:
-    GlTextureMedianProcessor(unsigned int width_half_size, unsigned int height_half_size);
+    explicit GlTextureMedianProcessor(const shader_programs::GlMedianShaderProgram& program);
 
   protected:
     void PrepareProcessing(const GlTexture& texture) override;
 
   private:
-    const shader_programs::GlMedianShaderProgram program_;
+    const shader_programs::GlMedianShaderProgram& program_;
 };
 
 }  // namespace image_processor::model::texture_processors

@@ -14,7 +14,9 @@ class ImageView final : public View {
     using Model = model::ImageProcessorModel;
 
     ImageView(std::string window_name, Model& model);
-    void Render() override;
+
+  protected:
+    void RenderIndexed() override;
 
   private:
     Model& model_;

@@ -10,10 +10,10 @@ static const std::vector<unsigned int> kImageVertexIndices{
 };
 
 static const std::vector<float> kImageVertices{
-    0.0f, 0.0f,  //
-    0.0f, 1.0f,  //
-    1.0f, 0.0f,  //
-    1.0f, 1.0f,  //
+    -1.0f, -1.0f,  //
+    -1.0f, 1.0f,   //
+    1.0f,  -1.0f,  //
+    1.0f,  1.0f,   //
 };
 
 static const std::vector<float> kImageTextureCoordinates{
@@ -94,8 +94,8 @@ auto GlTextureProcessor::CreateProcessingFramebuffer(const GlTexture& rendered_t
     glGenFramebuffers(1, &framebuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, rendered_texture.id,
-                           0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
+                           rendered_texture.GetId(), 0);
     return framebuffer;
 }
 
@@ -103,7 +103,6 @@ auto GlTextureProcessor::CreateProcessingTexture(const GlTexture& texture) -> Gl
     GLuint rendered_texture;
     glGenTextures(1, &rendered_texture);
     glBindTexture(GL_TEXTURE_2D, rendered_texture);
-
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
@@ -137,5 +136,7 @@ auto GlTextureProcessor::CreateKernelGlTexture(const Kernel& kernel) -> GlTextur
     return {kernel_texture, static_cast<GLsizei>(kernel.GetWidth()),
             static_cast<GLsizei>(kernel.GetHeight())};
 }
+
+void GlTextureProcessor::PrepareProcessing(const GlTexture& texture) {}
 
 }  // namespace image_processor::model::texture_processors

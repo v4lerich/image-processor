@@ -10,12 +10,12 @@ namespace image_processor::view {
 ImageView::ImageView(std::string window_name, Model& model)
     : model_(model), window_name_(std::move(window_name)) {}
 
-void ImageView::Render() {
+void ImageView::RenderIndexed() {
     ImGuiWindowFlags window_flags{ImGuiWindowFlags_HorizontalScrollbar |
                                   ImGuiWindowFlags_NoScrollWithMouse};
     if (ImGui::Begin(window_name_.c_str(), nullptr, window_flags)) {
-        if (const auto& texture = model_.GetInitialTexture(); texture) {
-            const auto imgui_image = texture->id;
+        if (const auto& texture = model_.GetResultTexture(); texture) {
+            const auto imgui_image = texture->GetId();
             const ImVec2 image_size{static_cast<float>(texture->width),
                                     static_cast<float>(texture->height)};
 
@@ -36,7 +36,6 @@ void ImageView::Render() {
             ImGui::SetScrollX(ImGui::GetScrollX() - delta.x);
             ImGui::SetScrollY(ImGui::GetScrollY() - delta.y);
         }
-
 
         ImGui::End();
     }
