@@ -4,7 +4,7 @@ Program written on C++ with OpenGL's GLSL shaders to transform images by applyin
 
 ![Application GUI view](./res/screenshot1.png)
 
-##What is this?
+## What is this?
 
 Application created to process texture with various kernels:
 * Edge detecting kernels ([Prewitt](https://en.wikipedia.org/wiki/Prewitt_operator), 
@@ -18,7 +18,7 @@ Created with:
 * [ImGui](https://github.com/ocornut/imgui/)
 * [OpenGL](https://wikipedia.org/wiki/OpenGL)
 
-##How to build
+## How to build
 
 Requirements:
 * OpenGL >= 4.2, or otherwise:
