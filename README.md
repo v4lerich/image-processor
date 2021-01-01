@@ -1,9 +1,5 @@
 # Image processor
 
-Kernel convolution Image processing application written on C++
-
-# Fast Fourier Transform visualization
-
 Program written on C++ with OpenGL's GLSL shaders to transform images by applying kernel convolutions.
 
 ![Application GUI view](./res/screenshot1.png)
