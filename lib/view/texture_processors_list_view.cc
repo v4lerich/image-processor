@@ -39,20 +39,19 @@ TextureProcessorsListView::TextureProcessorsListView(Model& model, std::string w
 
 void TextureProcessorsListView::RenderIndexed() {
     ImGuiFocusedFlags window_flags{};
-    if (ImGui::Begin(window_name_.c_str(), nullptr, window_flags)) {
-        std::string header = "Texture processors";
-        const float font_size = ImGui::GetFontSize() * header.size() / 2;
-        ImGui::SameLine(ImGui::GetWindowSize().x / 2 - (font_size / 2));
-        ImGui::Text("%s", header.c_str());
+    ImGui::Begin(window_name_.c_str(), nullptr, window_flags);
+    std::string header = "Texture processors";
+    const float font_size = ImGui::GetFontSize() * header.size() / 2;
+    ImGui::SameLine(ImGui::GetWindowSize().x / 2 - (font_size / 2));
+    ImGui::Text("%s", header.c_str());
 
-        show_factory_popup_ |= ImGui::Button("Create");
+    show_factory_popup_ |= ImGui::Button("Create");
 
-        for (auto& image_processor_view : image_processor_views_) {
-            image_processor_view->Render();
-        }
-
-        ImGui::End();
+    for (auto& image_processor_view : image_processor_views_) {
+        image_processor_view->Render();
     }
+
+    ImGui::End();
 
     ProcessImageProcessors();
     RenderFactoryPopup();

@@ -21,25 +21,24 @@ void KernelTextureProcessorView::RenderParameters() {
 
     if (changed) UpdateCoefficientsSize();
 
-    if (ImGui::BeginChild("Coefficients", {0, 200}, true, ImGuiWindowFlags_HorizontalScrollbar)) {
-        ImGuiID row_id = 0;
-        for (auto& row : coefficients_) {
-            ImGui::PushID(row_id++);
-            ImGuiID coefficient_id = 0;
-            for (auto& coefficient : row) {
-                ImGui::PushID(coefficient_id++);
-                ImGui::PushItemWidth(40);
-                changed |= ImGui::DragFloat("", &coefficient, 0.1f, -10.0f, +10.0f, "%.2f",
-                                            ImGuiSliderFlags_AlwaysClamp);
-                ImGui::PopItemWidth();
-                ImGui::PopID();
-                ImGui::SameLine();
-            }
+    ImGui::BeginChild("Coefficients", {0, 200}, true, ImGuiWindowFlags_HorizontalScrollbar);
+    ImGuiID row_id = 0;
+    for (auto& row : coefficients_) {
+        ImGui::PushID(row_id++);
+        ImGuiID coefficient_id = 0;
+        for (auto& coefficient : row) {
+            ImGui::PushID(coefficient_id++);
+            ImGui::PushItemWidth(40);
+            changed |= ImGui::DragFloat("", &coefficient, 0.1f, -10.0f, +10.0f, "%.2f",
+                                        ImGuiSliderFlags_AlwaysClamp);
+            ImGui::PopItemWidth();
             ImGui::PopID();
-            ImGui::Dummy({0, 0});
+            ImGui::SameLine();
         }
-        ImGui::EndChild();
+        ImGui::PopID();
+        ImGui::Dummy({0, 0});
     }
+    ImGui::EndChild();
 
     if (changed) SetChanged();
 }

@@ -17,20 +17,19 @@ ImageProcessorApplicationView::ImageProcessorApplicationView(Model& model)
       file_dialog_view_{model} {}
 
 void ImageProcessorApplicationView::RenderIndexed() {
-    if (BeginDockingWindow()) {
-        RenderMenuBar();
+    BeginDockingWindow();
+    RenderMenuBar();
 
-        ImGuiWindowClass window_class;
-        window_class.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoTabBar;
+    ImGuiWindowClass window_class;
+    window_class.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoTabBar;
 
-        ImGui::SetNextWindowClass(&window_class);
-        image_view_.Render();
+    ImGui::SetNextWindowClass(&window_class);
+    image_view_.Render();
 
-        ImGui::SetNextWindowClass(&window_class);
-        texture_processors_list_view_.Render();
+    ImGui::SetNextWindowClass(&window_class);
+    texture_processors_list_view_.Render();
 
-        EndDockingWindow();
-    }
+    EndDockingWindow();
 
     file_dialog_view_.Render();
 }
@@ -53,8 +52,8 @@ auto ImageProcessorApplicationView::BeginDockingWindow() -> bool {
 
     if (show) {
         InitDockingLayout();
-        ImGui::DockSpace(ImGui::GetID(kDockspaceName.c_str()), {0, 0});
     }
+    ImGui::DockSpace(ImGui::GetID(kDockspaceName.c_str()), {0, 0});
     return show;
 }
 
